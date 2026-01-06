@@ -58,6 +58,7 @@ pipeline {
         stage('Deploy to Kubernetes') {
             steps {
                 sh '''
+                ssh -o StrictHostKeyChecking=no ubuntu@localhost
                 kubectl set image deployment/hello-java-k8 \
                 hello-java-k8=ashok367/hello-java-k8:latest
 
