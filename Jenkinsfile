@@ -60,13 +60,14 @@ pipeline {
         sh '''
         echo "Deploying to Minikube..."
 
-        minikube kubectl -- set image deployment/hello-java-k8 \
-        hello-java-k8=ashok367/hello-java-k8:latest
+        minikube kubectl -- set image deployment/hello-java-deployment \
+        hello-java=ashok367/hello-java-k8:latest
 
-        minikube kubectl -- rollout status deployment/hello-java-k8
+        minikube kubectl -- rollout status deployment/hello-java-deployment
         '''
     }
 }
+
 
 
     }
