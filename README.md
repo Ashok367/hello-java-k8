@@ -22,7 +22,8 @@ Builds and pushes a Docker image
 
 Deploys the updated image to Kubernetes (Minikube)
 
-🧱 Architecture Flow
+Architecture Flow
+
 Developer → GitHub
           → Jenkins
           → Maven Build
@@ -32,21 +33,19 @@ Developer → GitHub
           → Minikube (Kubernetes)
           → Application Access (Browser)
 
-🖥️ Environment Details
+
+Environment Details
 
 OS: Ubuntu (AWS EC2)
-
 Java: 17
-
 Tomcat: 9
 
 Kubernetes: Minikube (Docker driver)
-
 Docker Hub Repo: ashok367/hello-java-k8
-
 GitHub Repo: hello-java-k8
 
-📁 Project Structure
+Project Structure
+
 hello-java-k8/
 ├── src/
 │   └── main/
@@ -73,7 +72,6 @@ sudo apt install openjdk-17-jdk -y
 
 Install Maven
 sudo apt install maven -y
-
 Install Docker
 sudo apt install docker.io -y
 sudo systemctl start docker
@@ -83,14 +81,12 @@ sudo usermod -aG docker ubuntu
 
 Re-login after this step.
 
-🔧 STEP 3: Install Jenkins
+STEP 3: Install Jenkins
 curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | sudo tee \
 /usr/share/keyrings/jenkins-keyring.asc > /dev/null
-
 echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
 https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
 /etc/apt/sources.list.d/jenkins.list > /dev/null
-
 sudo apt update
 sudo apt install jenkins -y
 sudo systemctl start jenkins
@@ -98,7 +94,6 @@ sudo systemctl enable jenkins
 
 
 Access Jenkins:
-
 http://<EC2_PUBLIC_IP>:8080
 
 
@@ -106,7 +101,8 @@ Get initial password:
 
 sudo cat /var/lib/jenkins/secrets/initialAdminPassword
 
-🔧 STEP 4: Install SonarQube (Docker)
+STEP 4: Install SonarQube (Docker)
+
 docker run -d \
   --name sonarqube \
   -p 9000:9000 \
@@ -125,26 +121,23 @@ admin / admin
 
 Create a SonarQube token.
 
-🔧 STEP 5: Install Minikube & kubectl
+STEP 5: Install Minikube & kubectl
 curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
 sudo install minikube-linux-amd64 /usr/local/bin/minikube
-
 curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
 chmod +x kubectl
 sudo mv kubectl /usr/local/bin/
 
 
 Start Minikube:
-
 minikube start --driver=docker
 
 
 Verify:
-
 minikube status
 kubectl get nodes
 
-🔧 STEP 6: Kubernetes Manifests
+STEP 6: Kubernetes Manifests
 deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -182,38 +175,28 @@ spec:
 
 
 Apply:
-
 kubectl apply -f deployment.yaml
 kubectl apply -f service.yaml
 
-🔧 STEP 7: Dockerfile
+STEP 7: Dockerfile
 FROM tomcat:9.0-jdk17
-
 RUN rm -rf /usr/local/tomcat/webapps/*
-
 COPY target/hello-java-k8.war /usr/local/tomcat/webapps/ROOT.war
-
 EXPOSE 8080
 
-🔧 STEP 8: Jenkins Credentials
+STEP 8: Jenkins Credentials
 
 Add in Jenkins → Manage Jenkins → Credentials
-
 SonarQube Token
-
 ID: sonar-token
-
 Type: Secret Text
 
 Docker Hub
-
 ID: dockerhub-creds
-
 Type: Username & Password
-
 Username: ashok367
 
-🔧 STEP 9: Jenkinsfile (Final)
+STEP 9: Jenkinsfile (Final)
 pipeline {
     agent any
 
@@ -283,8 +266,8 @@ pipeline {
     }
 }
 
-🌐 STEP 10: Access the Application
-Port Forward
+STEP 10: Access the Application
+Port Forward:
 kubectl port-forward service/hello-java-service 8085:8080
 
 Browser
@@ -295,5 +278,4 @@ ssh -i key_value_devops.pem -L 8085:localhost:8085 ubuntu@<EC2_PUBLIC_IP>
 
 
 Then open:
-
 http://localhost:8085/hello
