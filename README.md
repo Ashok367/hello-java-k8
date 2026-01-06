@@ -1,38 +1,5 @@
-This project demonstrates an end-to-end CI/CD pipeline for a Java web application using:
-
-GitHub – Source Code Management
-
-Jenkins – CI/CD automation
-
-SonarQube – Code quality analysis
-
-Docker – Application containerization
-
-Docker Hub – Image registry
-
-Kubernetes (Minikube) – Container orchestration
-
-The pipeline automatically:
-
-Builds the Java application
-
-Performs static code analysis
-
-Builds and pushes a Docker image
-
-Deploys the updated image to Kubernetes (Minikube)
-
+This project demonstrates an end-to-end CI/CD pipeline for a Java web application using modern DevOps tools and practices. GitHub is used for source code management, Jenkins is responsible for continuous integration and continuous delivery automation, and SonarQube is integrated to perform static code quality analysis. The application is containerized using Docker and the resulting images are stored in Docker Hub as the central image registry. Kubernetes, powered by Minikube, is used for container orchestration and application deployment. The CI/CD pipeline is fully automated and, on every code change, it builds the Java application, performs static code analysis, builds and pushes the Docker image to Docker Hub, and deploys the updated image to the Kubernetes (Minikube) cluster, ensuring a consistent, repeatable, and reliable delivery process.
 Architecture Flow
-
-Developer → GitHub
-          → Jenkins
-          → Maven Build
-          → SonarQube Scan
-          → Docker Build
-          → Docker Hub
-          → Minikube (Kubernetes)
-          → Application Access (Browser)
-
 
 Environment Details
 
@@ -44,26 +11,11 @@ Kubernetes: Minikube (Docker driver)
 Docker Hub Repo: ashok367/hello-java-k8
 GitHub Repo: hello-java-k8
 
-Project Structure
 
-hello-java-k8/
-├── src/
-│   └── main/
-│       ├── java/
-│       └── webapp/
-│           └── WEB-INF/
-│               └── web.xml
-├── Dockerfile
-├── Jenkinsfile
-├── deployment.yaml
-├── service.yaml
-├── pom.xml
-└── README.md
-
-🔧 STEP 1: Launch EC2 & Connect
+STEP 1: Launch EC2 & Connect
 ssh -i key_value_devops.pem ubuntu@<EC2_PUBLIC_IP>
 
-🔧 STEP 2: Install Required Tools
+STEP 2: Install Required Tools
 Update system
 sudo apt update && sudo apt upgrade -y
 
@@ -139,6 +91,7 @@ kubectl get nodes
 
 STEP 6: Kubernetes Manifests
 deployment.yaml
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -160,6 +113,7 @@ spec:
         - containerPort: 8080
 
 service.yaml
+
 apiVersion: v1
 kind: Service
 metadata:
