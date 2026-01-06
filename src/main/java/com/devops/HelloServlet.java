@@ -1,20 +1,19 @@
 package com.devops;
 
 import java.io.IOException;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/hello")
 public class HelloServlet extends HttpServlet {
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        response.setContentType("text/html");
-        response.getWriter().println("<h1>Hello from Jenkins + Docker + Kubernetes</h1>");
+        resp.setContentType("text/plain");
+        resp.getWriter().println("Hello from Kubernetes + Tomcat 9!");
     }
 }
 
