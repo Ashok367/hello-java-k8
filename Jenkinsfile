@@ -56,16 +56,19 @@ pipeline {
         }
 
         stage('Deploy to Kubernetes') {
-            steps {
-                sh '''
-                ssh -o StrictHostKeyChecking=no ubuntu@localhost
-                kubectl set image deployment/hello-java-k8 \
-                hello-java-k8=ashok367/hello-java-k8:latest
+    steps {
+        sh '''
+        ssh -i /var/lib/jenkins/.ssh/id_rsa \
+            -o StrictHostKeyChecking=no \
+            ubuntu@localhost "
+              kubectl set image deployment/hello-java-k8 \
+              hello-java-k8=ashok367/hello-java-k8:latest &&
+              kubectl rollout status deployment/hello-java-k8
+            "
+        '''
+    }
+}
 
-                kubectl rollout status deployment/hello-java-k8
-                '''
-            }
-        }
     }
 
     post {
